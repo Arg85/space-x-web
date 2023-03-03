@@ -5,9 +5,12 @@ import Banner from "./Components/Banner";
 import { MainContext } from "./ContextApi/MainContext";
 import { useEffect, useState } from "react";
 import MainContents from "./Components/MainContents";
-
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+// import 'primeflex/primeflex.css';
 function App() {
-  const [data, setData] = useState([]);
+ 
   // Scroll to a section
   const handleScroll = () => {
     // console.log("called");
@@ -16,17 +19,9 @@ function App() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-  useEffect(() => {
-    fetch("http://localhost:80/Backend/index.php")
-    .then((res) => res.json())
-    .then((data) => {
-      setTimeout(() => {
-        setData(data);
-      }, 300);
-    });
-  }, []);
+ 
   return (
-    <MainContext.Provider value={{data:data, scrolly: handleScroll }}>
+    <MainContext.Provider value={{ scrolly: handleScroll }}>
       <Header />
       <Banner />
       <MainContents/>
