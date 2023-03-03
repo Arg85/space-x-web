@@ -1,0 +1,18 @@
+:root {
+    --Bannerwidth: 730px;
+
+  }
+  
+
+.hero{
+    background-image: url('../Assets/Space-X.jpg');
+    height: var(--Bannerwidth);
+}
+.BannerContent{
+    margin: 0px auto;
+    width: 100%;
+    display: flex;
+    height: var(--Bannerwidth);
+    align-items: center;
+
+}
