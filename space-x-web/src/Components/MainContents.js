@@ -232,8 +232,9 @@ function MainContents() {
             <label htmlFor="dd-launch">Select a Launch</label>
           </span>
         </div>
+        <div style={{    width: "100%",display: "flex",justifyContent: "center"}}><Button onClick={handleReset}>Reset</Button></div>
       </form>
-      <Button onClick={handleReset}>Reset</Button>
+      
       {loading ? (
         <div className="card flex justify-content-center">
           <ProgressSpinner />
