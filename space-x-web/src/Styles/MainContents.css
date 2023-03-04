@@ -8,12 +8,21 @@
     /* height: 500px; */
 }
 form{
-    padding: 40px 0px;
+    padding: 80px 0px;
+}
+.FilterHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }
 /* .inputfield{
     width: 45%;
     margin:12px;
 } */
+.p-dialog .p-dialog-content{
+    padding: 14px !important;
+}
 .inputfield {
     display: flex;
     flex-wrap: wrap;
@@ -76,5 +85,11 @@ form{
     color:#E5E5CB !important;
 }
 .p-dropdown {
-    background: #5B8FB9 !important;
+    background: #000000 !important;
+}
+.p-dropdown-panel{
+    background: black !important;
+}
+.p-card .p-card-body{
+    padding: 0px !important;
 }

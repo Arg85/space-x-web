@@ -162,6 +162,7 @@ function MainContents() {
   return (
     <div id="section-1">
       <form>
+        <div className="FilterHeader"><h2>Filters</h2></div>
         <div className="row">
         <div className="inputfield">
             <span className="p-float-label">
