@@ -25,7 +25,7 @@ function App() {
  
   return (
     <MainContext.Provider value={{ scrolly: handleScroll }}>
-      <Header />
+      <Header data-testid="app-id" />
       <Banner />
       <MainContents/>
     </MainContext.Provider>

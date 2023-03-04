@@ -36,7 +36,6 @@ function MainContents() {
   });
 
   useEffect(() => {
-    console.log("firstyyy usy");
     setLoading(true);
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
       .then((res) => res.json())
@@ -90,6 +89,7 @@ function MainContents() {
     } catch (e) {
       setLoading(false);
       console.log(`Error Occured`);
+      toast.current.show({severity:'error', summary: 'Error', detail:e, life: 3000});
     }
   };
 
@@ -163,7 +163,7 @@ function MainContents() {
         obj["launch"] = obj["launch"].name;
       }
       const fobj = [{ ...obj, limit: limit, page: page, reset: 0 }];
-      console.log(fobj);
+   
       const response = await fetch(`http://localhost:80/Backend/index.php`, {
         method: "POST", // or 'PUT'
         headers: {
@@ -172,7 +172,6 @@ function MainContents() {
         body: JSON.stringify(...fobj),
       });
       const d = await response.json();
-      console.log(d, "--------");
       setData(d.docs);
       setTotalRecords(d.totalDocs);
 
@@ -183,7 +182,7 @@ function MainContents() {
     }
   }, [page, limit]);
   return (
-    <div id="section-1">
+    <div id="section-1" data-testid="section-id">
       <form>
         <div className="FilterHeader">
           <h2>Filters</h2>
