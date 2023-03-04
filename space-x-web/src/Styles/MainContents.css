@@ -20,12 +20,21 @@ form{
     justify-content: center;
     width: 100%;
   }
-  
+  .p-card,.p-dialog .p-dialog-header{
+ background-color: #000000 !important;
+  }
+  .p-paginator{
+    background: #000000c9 !important;
+  }
+  .p-card:hover{
+    box-shadow: 2px 2px 2px 2px whitesmoke;
+  }
   .inputfield > * {
     flex: 1;
     margin: 1.5rem;
     max-width: 50%;
   }
+ 
   @media screen and (max-width: 768px) {
     .inputfield {
       flex-direction: column;
@@ -36,15 +45,16 @@ form{
    
     .p-float-label {width: 100%;}
   }
+  
   .p-card {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     max-width: 320px;
-    height: 100%;
-    min-height:200px ;
+    height: 100%; */
+    min-height: 100%;
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -62,3 +72,9 @@ form{
    
   }
   
+.p-dropdown .p-dropdown-label,.p-float-label label {
+    color:#E5E5CB !important;
+}
+.p-dropdown {
+    background: #5B8FB9 !important;
+}
