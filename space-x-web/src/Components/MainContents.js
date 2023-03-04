@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import "../Styles/MainContents.css";
 import { Card } from "primereact/card";
@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import { Paginator } from "primereact/paginator";
+import { Toast } from "primereact/toast";
 
 function MainContents() {
   const [first, setFirst] = useState(0);
@@ -15,6 +16,8 @@ function MainContents() {
   const [totalRecords, setTotalRecords] = useState(0);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [visible, setVisible] = useState(false);
   const [type, setType] = useState([
     { name: "Dragon 1.0" },
     { name: "Dragon 1.1" },
@@ -34,7 +37,7 @@ function MainContents() {
     launch: "",
     reset: 0,
   });
-
+  const toast = useRef(null);
   useEffect(() => {
     setLoading(true);
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
@@ -89,7 +92,12 @@ function MainContents() {
     } catch (e) {
       setLoading(false);
       console.log(`Error Occured`);
-      toast.current.show({severity:'error', summary: 'Error', detail:e, life: 3000});
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: e,
+        life: 3000,
+      });
     }
   };
 
@@ -104,8 +112,6 @@ function MainContents() {
     setValues({ ...values, [e.target.name]: e.target.value });
     sendRequest({ ...obj, [e.target.name]: e.target.value });
   };
-
-  const cardClick = () => {};
   const cardFooter = (item) => {
     return (
       <span>
@@ -119,8 +125,7 @@ function MainContents() {
     );
   };
 
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [visible, setVisible] = useState(false);
+
   const handleReset = () => {
     const em = {
       status: "",
@@ -163,7 +168,7 @@ function MainContents() {
         obj["launch"] = obj["launch"].name;
       }
       const fobj = [{ ...obj, limit: limit, page: page, reset: 0 }];
-   
+
       const response = await fetch(`http://localhost:80/Backend/index.php`, {
         method: "POST", // or 'PUT'
         headers: {
@@ -183,6 +188,7 @@ function MainContents() {
   }, [page, limit]);
   return (
     <div id="section-1" data-testid="section-id">
+      <Toast ref={toast} />
       <form>
         <div className="FilterHeader">
           <h2>Filters</h2>
@@ -231,9 +237,13 @@ function MainContents() {
             <label htmlFor="dd-launch">Select a Launch</label>
           </span>
         </div>
-        <div style={{    width: "100%",display: "flex",justifyContent: "center"}}><Button onClick={handleReset}>Reset</Button></div>
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <Button onClick={handleReset}>Reset</Button>
+        </div>
       </form>
-      
+
       {loading ? (
         <div className="card flex justify-content-center">
           <ProgressSpinner />
