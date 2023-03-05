@@ -46,10 +46,10 @@ function MainContents() {
     if (typeof obj["launch"] === "object") {
       obj["launch"] = obj["launch"].name;
     }
-   obj= obj.reset == 1 ? obj : { ...obj, reset: 0 }
+    obj=obj.reset == 1 ? obj : { ...obj, reset: 0 }
     return obj;
   }
-  useEffect(() => {
+  useEffect((obj) => {
     setLoading(true);
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
       .then((res) => res.json())
@@ -83,16 +83,37 @@ function MainContents() {
       const data = await res.json();
       setLoading(false);
       if (obj.reset != 1) {
+       
         if (data.docs) {
           setData(data.docs);
           setTotalRecords(data.totalDocs);
           setLimit(data.limit);
         }
+       
         setData(data);
-        setData(data.docs);
+       
         setTotalRecords(data.totalDocs);
         setLimit(data.limit);
       }
+      else if (obj.reset == 1) {
+        setData(data.docs);
+        console.log("odi")
+       
+        setLimit(30);
+        setTotalRecords(data.totalDocs);
+       
+        // if (data.docs) {
+        //   setData(data.docs);
+        //   setTotalRecords(data.totalDocs);
+        //   setLimit(data.limit);
+        // }
+       
+        // setData(data);
+        // setData(data.docs);
+        // setTotalRecords(data.totalDocs);
+        // setLimit(data.limit);
+      }
+      
     } catch (e) {
       setLoading(false);
       console.log(`Error Occured`);
@@ -162,7 +183,15 @@ function MainContents() {
       };
 
       setLoading(true);
-      const obj2=formatData(obj)
+      if (typeof obj["type"] === "object") {
+        obj["type"] = obj["type"].name;
+      }
+      if (typeof obj["status"] === "object") {
+        obj["status"] = obj["status"].name;
+      }
+      if (typeof obj["launch"] === "object") {
+        obj["launch"] = obj["launch"].name;
+      }
       const fobj = [{ ...obj, limit: limit, page: page, reset: 0 }];
 
       const response = await fetch(`http://localhost:80/Backend/index.php`, {
@@ -178,7 +207,7 @@ function MainContents() {
 
       setLoading(false);
     };
-    if (page != 0) {
+    if (page != 0 && limit<30) {
       fetchData();
     }
   }, [page, limit]);
@@ -269,7 +298,7 @@ function MainContents() {
                   </div>
                 );
               })}
-          {data.length === 0 && (
+          {(data?.length === 0 || data?.docs?.length===0) && (
             <div className="text-center bg-white">
               <h5>No Capsules available </h5>
             </div>
