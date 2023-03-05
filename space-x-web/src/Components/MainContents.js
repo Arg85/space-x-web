@@ -10,8 +10,6 @@ import { Paginator } from "primereact/paginator";
 import { Toast } from "primereact/toast";
 
 function MainContents() {
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(10);
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -38,6 +36,19 @@ function MainContents() {
     reset: 0,
   });
   const toast = useRef(null);
+  const formatData=(obj)=>{
+    if (typeof obj["type"] === "object") {
+      obj["type"] = obj["type"].name;
+    }
+    if (typeof obj["status"] === "object") {
+      obj["status"] = obj["status"].name;
+    }
+    if (typeof obj["launch"] === "object") {
+      obj["launch"] = obj["launch"].name;
+    }
+   obj= obj.reset == 1 ? obj : { ...obj, reset: 0 }
+    return obj;
+  }
   useEffect(() => {
     setLoading(true);
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
@@ -58,20 +69,13 @@ function MainContents() {
   }, []);
   const sendRequest = async (obj) => {
     setLoading(true);
-    if (typeof obj["type"] === "object") {
-      obj["type"] = obj["type"].name;
-    }
-    if (typeof obj["status"] === "object") {
-      obj["status"] = obj["status"].name;
-    }
-    if (typeof obj["launch"] === "object") {
-      obj["launch"] = obj["launch"].name;
-    }
+  const obj2=formatData(obj)
 
     try {
       const res = await fetch("http://localhost:80/Backend/index.php", {
         method: "POST",
-        body: JSON.stringify(obj.reset == 1 ? obj : { ...obj, reset: 0 }),
+        // body: JSON.stringify(obj.reset == 1 ? obj : { ...obj, reset: 0 }),
+        body: JSON.stringify(obj2),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -125,8 +129,8 @@ function MainContents() {
     );
   };
 
-
-  const handleReset = () => {
+  const handleReset = (e) => {
+    e.preventDefault()
     const em = {
       status: "",
       type: "",
@@ -150,7 +154,7 @@ function MainContents() {
   };
   useEffect(() => {
     const fetchData = async () => {
-      console.log("kal--------");
+
       let obj = {
         status: values.status,
         type: values.type,
@@ -158,15 +162,7 @@ function MainContents() {
       };
 
       setLoading(true);
-      if (typeof obj["type"] === "object") {
-        obj["type"] = obj["type"].name;
-      }
-      if (typeof obj["status"] === "object") {
-        obj["status"] = obj["status"].name;
-      }
-      if (typeof obj["launch"] === "object") {
-        obj["launch"] = obj["launch"].name;
-      }
+      const obj2=formatData(obj)
       const fobj = [{ ...obj, limit: limit, page: page, reset: 0 }];
 
       const response = await fetch(`http://localhost:80/Backend/index.php`, {

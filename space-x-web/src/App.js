@@ -3,10 +3,6 @@ import "./input.css";
 import Header from "./Components/Header";
 import Banner from "./Components/Banner";
 import { MainContext } from "./ContextApi/MainContext";
-import { useEffect, useState } from "react";
-
-import { Toast } from 'primereact/toast';
-        
 import MainContents from "./Components/MainContents";
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
