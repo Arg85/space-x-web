@@ -30,7 +30,7 @@ This application provides users with access to information regarding SpaceX caps
 
 ## Testing
 
-To test the project very basic test cases have been implmented which can be checked by the commant
+To test the project very basic test cases have been implmented which can be checked by the command
 
 npm runtest
 
