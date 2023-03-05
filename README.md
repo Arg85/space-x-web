@@ -1,4 +1,4 @@
-# SpaceX Capsules Showcase Project
+# Space-X-Web Capsules Assignment
 This project has been developed using the React framework to present information about capsules obtained from the SpaceX API. The technology stack used in this project includes Tailwind CSS, Jest, PrimeReact Icons, and PHP for the backend
 
 Video Drive Link is available below:
@@ -12,6 +12,7 @@ https://drive.google.com/file/d/1dlrwbjUxdKw_2k6LRhfJpSdXfTdyFaiW/view?usp=shari
 * PrimeReact
 * Tailwind CSS
 * PrimeReact Icons
+* Jest
 * PHP
 
 ## Getting Started
