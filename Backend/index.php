@@ -15,7 +15,7 @@ switch ($method) {
 
         // Decode the JSON request body into an associative array
         $request_body = json_decode($request_body_json, true);
-        // echo $request_body;
+
         $data = [];
         if (!empty($request_body['type'])) {
             $data['type'] = $request_body['type'];
@@ -27,38 +27,32 @@ switch ($method) {
         }
 
         if (!empty($request_body['launch'])) {
-            $data['launch'] = $request_body['launch'];
+            $data['launches'] = $request_body['launch'];
         }
-if($request_body['reset']==1){
-    $w = new stdClass();
+        if ($request_body['reset'] == 1) {
+            $w = new stdClass();
 
-    $request_body1 = array(
-        'query' => $w,
-        'options' => array("limit" => $request_body['limit'], 'page' => $request_body['page'])
-        //   { $request_body['limit'], 'page' => $request_body['page']}
+            $request_body1 = array(
+                'query' => $w,
+                'options' => array("limit" => 30, 'page' => 1)
 
 
-    );
-}
+            );
+        }
 
         if ($request_body['page'] == 1) {
 
 
-            if (sizeof($data) == 0) {
+            if (sizeof($data) == 0 && $request_body['limit'] != 30) {
 
                 $w = new stdClass();
 
                 $request_body1 = $w;
 
 
-            } else {
-
+            } elseif (sizeof($data) != 0 && $request_body['limit'] < 30) {
                 $request_body1 = array(
                     'query' => $data
-                    // 'options' => array(
-                    //     array('options' => array('limit' => $request_body['limit'], 'page' => $request_body['page']))
-
-                    // )
                 );
             }
 
@@ -70,38 +64,11 @@ if($request_body['reset']==1){
             $request_body1 = array(
                 'query' => $data,
                 'options' => array("limit" => $request_body['limit'], 'page' => $request_body['page'])
-                //   { $request_body['limit'], 'page' => $request_body['page']}
-
-
             );
 
         }
 
 
-
-        // // echo $request_body['limit'];  
-        // echo "----------------------";  
-        //    if($request_body['page']>1){ 
-        //     echo "---------------------------------------";
-        //     echo $request_body['page'] ;
-        //     echo "---------------------------------------";
-
-        //     $request_body = array(
-        //     'query' =>$data,
-        //     'options' => array(
-        //         array('options' => array('limit' => $request_body['limit'], 'page' => $request_body['page']))
-
-        //     )
-        // );}
-
-        // Construct the $request_body array using the values from the request body
-        // $request_body = array(
-        //     'query' =>$data
-        //     // 'options' => array(
-        //     //     array('options' => array('limit' => $request_body['limit'], 'page' => $request_body['page']))
-
-        //     // )
-        // );
 
         // Convert the $request_body array to a JSON string
         $request_body_json = json_encode($request_body1);
