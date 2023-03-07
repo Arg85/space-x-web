@@ -17,7 +17,7 @@ function FIlter() {
         { name: "Unknown" },
         { name: "destroyed" },
       ]);
-      let { values,setValues,setData,setLoading,formatData,setTotalRecords,setLimit,toast,launch } = useContext(MainContext);
+      let { values,setValues,setData,setLoading,formatData,setTotalRecords,setLimit,toast,launch,limit,page,setPage } = useContext(MainContext);
       const sendRequest = async (obj) => {
         setLoading(true);
       const obj2=formatData(obj)
@@ -80,15 +80,17 @@ function FIlter() {
     sendRequest(em);
   };
     const setVal = (e) => {
+        console.log(page)
         let obj = {
-          status: values.status,
-          type: values.type,
-          launch: values.launch,
-          limit: 10,
-          page: 1,
+            status: values.status,
+            type: values.type,
+            launch: values.launch,
+            limit: 10,
+            page: 1,
         };
         setValues({ ...values, [e.target.name]: e.target.value });
         sendRequest({ ...obj, [e.target.name]: e.target.value });
+        console.log("called",limit,page)
       };
   return (
     <>
