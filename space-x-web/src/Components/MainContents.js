@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Dropdown } from "primereact/dropdown";
+/* eslint-disable */
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "../Styles/MainContents.css";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
@@ -7,48 +7,20 @@ import { Button } from "primereact/button";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import { Paginator } from "primereact/paginator";
+
+import FIlter from "./FIlter";
+import { MainContext } from "../ContextApi/MainContext";
 import { Toast } from "primereact/toast";
 
 function MainContents() {
-  const [loading, setLoading] = useState(false);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [type, setType] = useState([
-    { name: "Dragon 1.0" },
-    { name: "Dragon 1.1" },
-    { name: "Dragon 2.0" },
-  ]);
-  const [launch, setLaunch] = useState([]);
-  const [status, setStatus] = useState([
-    { name: "Active" },
-    { name: "retired" },
-    { name: "Unknown" },
-    { name: "destroyed" },
-  ]);
-  const [data, setData] = useState([]);
-  const [values, setValues] = useState({
-    status: "",
-    type: "",
-    launch: "",
-    reset: 0,
-  });
-  const toast = useRef(null);
-  const formatData=(obj)=>{
-    if (typeof obj["type"] === "object") {
-      obj["type"] = obj["type"].name;
-    }
-    if (typeof obj["status"] === "object") {
-      obj["status"] = obj["status"].name;
-    }
-    if (typeof obj["launch"] === "object") {
-      obj["launch"] = obj["launch"].name;
-    }
-    obj=obj.reset == 1 ? obj : { ...obj, reset: 0 }
-    return obj;
-  }
+
+
+  let { values,data,setData,loading,setLoading,setLaunch,limit,page,setTotalRecords,totalRecords,setPage,toast } = useContext(MainContext);
+
+
   useEffect((obj) => {
     setLoading(true);
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
@@ -67,76 +39,9 @@ function MainContents() {
         }, 300);
       });
   }, []);
-  const sendRequest = async (obj) => {
-    setLoading(true);
-  const obj2=formatData(obj)
 
-    try {
-      const res = await fetch("http://localhost:80/Backend/index.php", {
-        method: "POST",
-        // body: JSON.stringify(obj.reset == 1 ? obj : { ...obj, reset: 0 }),
-        body: JSON.stringify(obj2),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-      const data = await res.json();
-      setLoading(false);
-      if (obj.reset != 1) {
-       
-        if (data.docs) {
-          setData(data.docs);
-          setTotalRecords(data.totalDocs);
-          setLimit(data.limit);
-        }
-       
-        setData(data);
-       
-        setTotalRecords(data.totalDocs);
-        setLimit(data.limit);
-      }
-      else if (obj.reset == 1) {
-        setData(data.docs);
-        console.log("odi")
-       
-        setLimit(30);
-        setTotalRecords(data.totalDocs);
-       
-        // if (data.docs) {
-        //   setData(data.docs);
-        //   setTotalRecords(data.totalDocs);
-        //   setLimit(data.limit);
-        // }
-       
-        // setData(data);
-        // setData(data.docs);
-        // setTotalRecords(data.totalDocs);
-        // setLimit(data.limit);
-      }
-      
-    } catch (e) {
-      setLoading(false);
-      console.log(`Error Occured`);
-      toast.current.show({
-        severity: "error",
-        summary: "Error",
-        detail: e,
-        life: 3000,
-      });
-    }
-  };
 
-  const setVal = (e) => {
-    let obj = {
-      status: values.status,
-      type: values.type,
-      launch: values.launch,
-      limit: 10,
-      page: 1,
-    };
-    setValues({ ...values, [e.target.name]: e.target.value });
-    sendRequest({ ...obj, [e.target.name]: e.target.value });
-  };
+
   const cardFooter = (item) => {
     return (
       <span>
@@ -150,19 +55,6 @@ function MainContents() {
     );
   };
 
-  const handleReset = (e) => {
-    e.preventDefault()
-    const em = {
-      status: "",
-      type: "",
-      launch: "",
-      limit: 30,
-      page: 1,
-      reset: 1,
-    };
-    setValues(em);
-    sendRequest(em);
-  };
   const showDialog = (item) => {
     console.log(item, "sel");
     setSelectedItem(item);
@@ -214,60 +106,7 @@ function MainContents() {
   return (
     <div id="section-1" data-testid="section-id">
       <Toast ref={toast} />
-      <form>
-        <div className="FilterHeader">
-          <h2>Filters</h2>
-        </div>
-        <div className="row">
-          <div className="inputfield">
-            <span className="p-float-label">
-              <Dropdown
-                inputId="dd-type"
-                name="type"
-                value={values.type}
-                onChange={setVal}
-                options={type}
-                optionLabel="name"
-                className="w-full md:w-14rem"
-              />
-              <label htmlFor="dd-type">Select a Type</label>
-            </span>
-          </div>
-          <div className="inputfield">
-            <span className="p-float-label">
-              <Dropdown
-                inputId="dd-status"
-                name="status"
-                value={values.status}
-                onChange={setVal}
-                options={status}
-                optionLabel="name"
-                className="w-full md:w-14rem"
-              />
-              <label htmlFor="dd-status">Select a Status</label>
-            </span>
-          </div>
-        </div>
-        <div className="inputfield">
-          <span className="p-float-label">
-            <Dropdown
-              inputId="dd-launch"
-              name="launch"
-              value={values.launch}
-              onChange={setVal}
-              options={launch}
-              optionLabel="name"
-              className="w-full md:w-14rem"
-            />
-            <label htmlFor="dd-launch">Select a Launch</label>
-          </span>
-        </div>
-        <div
-          style={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
-          <Button onClick={handleReset}>Reset</Button>
-        </div>
-      </form>
+   <FIlter/>
 
       {loading ? (
         <div className="card flex justify-content-center">
