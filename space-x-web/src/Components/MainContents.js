@@ -15,9 +15,10 @@ import { Toast } from "primereact/toast";
 function MainContents() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [visible, setVisible] = useState(false);
-  let { values,data,setData,loading,setLoading,setLaunch,limit,page,setTotalRecords,totalRecords,setPage,toast } = useContext(MainContext);
+  let { values,data,setData,loading,setLoading,setLaunch,limit,page,setTotalRecords,totalRecords,setPage,toast ,setLimit} = useContext(MainContext);
   useEffect((obj) => {
     setLoading(true);
+    console.log("iniii")
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
@@ -30,6 +31,8 @@ function MainContents() {
 
           setLaunch(LaunchList);
           setData(JSON.parse(data));
+          setLimit(30);
+          setPage(0);
           setLoading(false);
         }, 300);
       });
