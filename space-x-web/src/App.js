@@ -7,6 +7,7 @@ import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { useRef, useState } from "react";
+import ScrollToTop from "./Components/ScrollToTop";
 // import 'primeflex/primeflex.css';
 function App() {
   const [values, setValues] = useState({
@@ -68,6 +69,7 @@ function App() {
       }}
     >
       <Header data-testid="app-id" />
+      <ScrollToTop/>
       <Banner />
       <MainContents />
     </MainContext.Provider>
