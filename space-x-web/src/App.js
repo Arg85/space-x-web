@@ -32,7 +32,7 @@ function App() {
     if (typeof obj["launch"] === "object") {
       obj["launch"] = obj["launch"].name;
     }
-    obj = obj.reset === 1 ? obj : { ...obj, reset: 0 };
+    obj = obj.reset === 1 ? obj : { ...obj, reset: 0, };
     return obj;
   };
   const toast = useRef(null);

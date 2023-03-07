@@ -13,14 +13,9 @@ import { MainContext } from "../ContextApi/MainContext";
 import { Toast } from "primereact/toast";
 
 function MainContents() {
-
   const [selectedItem, setSelectedItem] = useState(null);
   const [visible, setVisible] = useState(false);
-
-
   let { values,data,setData,loading,setLoading,setLaunch,limit,page,setTotalRecords,totalRecords,setPage,toast } = useContext(MainContext);
-
-
   useEffect((obj) => {
     setLoading(true);
     fetch("http://localhost:80/Backend/index.php", { method: "GET" })
@@ -39,8 +34,6 @@ function MainContents() {
         }, 300);
       });
   }, []);
-
-
 
   const cardFooter = (item) => {
     return (
@@ -67,7 +60,6 @@ function MainContents() {
   };
   useEffect(() => {
     const fetchData = async () => {
-
       let obj = {
         status: values.status,
         type: values.type,
@@ -84,7 +76,7 @@ function MainContents() {
       if (typeof obj["launch"] === "object") {
         obj["launch"] = obj["launch"].name;
       }
-      const fobj = [{ ...obj, limit: limit, page: page, reset: 0 }];
+      const fobj = [{ ...obj, limit: limit, page: page+1, reset: 0 }];
 
       const response = await fetch(`http://localhost:80/Backend/index.php`, {
         method: "POST", // or 'PUT'
@@ -99,7 +91,8 @@ function MainContents() {
 
       setLoading(false);
     };
-    if (page != 0 && limit<30) {
+    if (limit<30) {
+  
       fetchData();
     }
   }, [page, limit]);
@@ -194,9 +187,11 @@ function MainContents() {
         <Paginator
           first={page * limit}
           rows={limit}
+          // currentPage={page}
           totalRecords={totalRecords}
           onPageChange={(e) => {
-            setPage(e.page + 1);
+            setPage(e.page);
+            console.log(e.page,"paggy")
           }}
         />
       </div>
